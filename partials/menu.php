@@ -9,4 +9,4 @@
           <li><a href="blog.php">Blog</a></li>
           <li class="last"><a href="contact.php">Contact Us</a></li>
         </ul>
-	</div> <!-- end of menu -->
+	</div>

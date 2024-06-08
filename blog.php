@@ -1,71 +1,122 @@
-<style>
-<?php include("css/templatemo_style.css")?>
-</style>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Ancient Blog Theme</title>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<link href="templatemo_style.css" rel="stylesheet" type="text/css" />
+<?php
 
-<script language="javascript" type="text/javascript">
-function clearText(field)
-{
-    if (field.defaultValue == field.value) field.value = '';
-    else if (field.value == '') field.value = field.defaultValue;
+class Template {
+    private $title;
+    private $metaCharset;
+    private $metaKeywords;
+    private $metaDescription;
+    private $cssFile;
+    private $script;
+
+    public function __construct($title, $metaCharset = 'utf-8', $metaKeywords = '', $metaDescription = '', $cssFile = 'templatemo_style.css', $script = '') {
+        $this->title = $title;
+        $this->metaCharset = $metaCharset;
+        $this->metaKeywords = $metaKeywords;
+        $this->metaDescription = $metaDescription;
+        $this->cssFile = $cssFile;
+        $this->script = $script;
+    }
+
+    public function renderHeader() {
+        echo "<!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta http-equiv='Content-Type' content='text/html; charset={$this->metaCharset}' />
+            <title>{$this->title}</title>
+            <meta name='keywords' content='{$this->metaKeywords}' />
+            <meta name='description' content='{$this->metaDescription}' />
+            <link href='{$this->cssFile}' rel='stylesheet' type='text/css' />
+            {$this->script}
+        </head>
+        <body>";
+    }
+
+    public function renderFooter() {
+        echo "</body>
+        </html>";
+    }
+
+    public function includeFile($filePath) {
+        include($filePath);
+    }
 }
-</script>
 
-</head>
-<body>
+class Content {
+    private $content;
+
+    public function __construct($content) {
+        $this->content = $content;
+    }
+
+    public function render() {
+        echo $this->content;
+    }
+}
+
+// Script na vyčistenie textového poľa
+$script = "<script language='javascript' type='text/javascript'>
+    function clearText(field) {
+        if (field.defaultValue == field.value) field.value = '';
+        else if (field.value == '') field.value = field.defaultValue;
+    }
+</script>";
+
+// Vytvorenie šablóny
+$template = new Template("Ancient Blog Theme", "utf-8", "", "", "templatemo_style.css", $script);
+$template->renderHeader();
+?>
 
 <div id="templatemo_wrapper">
-
-	<span class="bg_top"></span>
+    <span class="bg_top"></span>
     <span class="bg_bottom"></span>
 
-	<?php include("partials/menu.php")?>
-    
-    <?php include("partials/header.php")?>
+    <?php
+    $template->includeFile("partials/menu.php");
+    $template->includeFile("partials/header.php");
+    ?>
     
     <div id="templatemo_main">
-    <?php include("partials/sidebar.php")?>
+        <?php $template->includeFile("partials/sidebar.php"); ?>
         
         <div id="content">
-        
-        	<div class="cbox_fws">
-        	<h3><a href="#">Mauris congue felis at nisi</a></h3>
-          <p align="justify"><a href="#"><img src="images/templatemo_image_07.jpg" alt="image" class="image_frame image_fl" /></a> Ancient Template is designed by <a href="#">templatemo</a> website. Feel free to download, edit and apply this template for your personal or commercial websites. Validate <a href="http://validator.w3.org/check?uri=referer" rel="nofollow">XHTML</a> &amp; <a href="http://jigsaw.w3.org/css-validator/check/referer" rel="nofollow">CSS</a>. Ut enim ad minim veniamquis nostrud exercitation ullamco lab.    Pellentesque elementum enim a augue. Donec in nisi. Etiam sit amet turpis. Duis nulla diam, posuere ac, varius id, ullamcorper sit amet, libero. Nam sodales, pede vel dapibus lobortis, ipsum diam molestie risus, a vulputate risus nisl pulvinar lacus.  </p>
-          <p align="justify">Category: <a href="#">Flash Design</a> | Posted by <a href="#">Admin</a> | <strong>Date:</strong> 18 March 2048 </p>
-          </div>
-            
-        	<div class="cbox_fws">
-        	<h3><a href="#">Etiam sit amet turpis</a></h3>
-        	<p align="justify"><a href="#"><img src="images/templatemo_image_05.jpg" alt="image" class="image_frame image_fl" /></a>  Fusce quis diam sit amet tortor luctus pellentesque. Donec accumsan urna non elit tristique mattis. Vivamus fermentum orci viverra nisl. In nec magna id ipsum aliquam dictum. Donec euismod enim et risus. </p>
-        	<p align="justify">Nunc dictum, massa non dignissim commodo, metus quam vehicula lorem, et dignissim enim augue vitae pede. Donec at arcu. Nunc aliquam, dolor vitae sollicitudin lacinia, nibh orci sagittis diam, dignissim sodales dui erat nec eros. Fusce quis enim. Aenean eleifend, neque hendrerit elementum sodales, odio erat sagittis quam, sed tempor orci magna vitae tellus.</p>
-            <p align="justify">Category: <a href="#">Web Development</a> | Posted by <a href="#">Ford</a> | <strong>Date:</strong> 14 March 2048 </p>
-            
-            </div>
-            
+            <?php
+            $content1 = new Content("
+                <div class='cbox_fws'>
+                    <h3><a href='#'>Mauris congue felis at nisi</a></h3>
+                    <p align='justify'><a href='#'><img src='images/templatemo_image_07.jpg' alt='image' class='image_frame image_fl' /></a> Ancient Template is designed by <a href='#'>templatemo</a> website. Feel free to download, edit and apply this template for your personal or commercial websites. Validate <a href='http://validator.w3.org/check?uri=referer' rel='nofollow'>XHTML</a> &amp; <a href='http://jigsaw.w3.org/css-validator/check/referer' rel='nofollow'>CSS</a>. Ut enim ad minim veniamquis nostrud exercitation ullamco lab.    Pellentesque elementum enim a augue. Donec in nisi. Etiam sit amet turpis. Duis nulla diam, posuere ac, varius id, ullamcorper sit amet, libero. Nam sodales, pede vel dapibus lobortis, ipsum diam molestie risus, a vulputate risus nisl pulvinar lacus.  </p>
+                    <p align='justify'>Category: <a href='#'>Flash Design</a> | Posted by <a href='#'>Admin</a> | <strong>Date:</strong> 18 March 2048 </p>
+                </div>
+            ");
+            $content1->render();
 
-            <h3><a href="#">Mauris congue felis at nisi</a></h3>
-       	  <p align="justify"><a href="#"><img src="images/templatemo_image_04.jpg" alt="image" class="image_frame image_fl" /></a> Duis faucibus, massa vitae dictum facilisis, ipsum nibh facilisis nisi, ut scelerisque metus enim in tortor. Mauris in sapien in massa pellentesque viverra. Quisque venenatis fringilla eros. Etiam in lorem ac nulla imperdiet sodales. Phasellus in justo at lectus pulvinar ultrices. Mauris ultrices sollicitudin turpis. Fusce non lacus et lorem ornare interdum. Nunc eget urna. Mauris vestibulum felis eget tortor. </p>
-       	  <p align="justify">Praesent mattis varius quam. Vestibulum ullamcorper ipsum nec augue. Vestibulum auctor odio eget ante. Nunc commodo, magna pharetra semper vehicula, dui ligula feugiat elit, et euismod nunc orci ut libero. Etiam sodales massa vel metus. Mauris et elit quis mauris aliquet luctus. </p>
-          <p align="justify">Category: <a href="#">Print Media</a> | Posted by <a href="#">Neo</a> | <strong>Date:</strong> 12 March 2048 </p>
-            <div class="cleaner h30"></div>
-            
+            $content2 = new Content("
+                <div class='cbox_fws'>
+                    <h3><a href='#'>Etiam sit amet turpis</a></h3>
+                    <p align='justify'><a href='#'><img src='images/templatemo_image_05.jpg' alt='image' class='image_frame image_fl' /></a> Fusce quis diam sit amet tortor luctus pellentesque. Donec accumsan urna non elit tristique mattis. Vivamus fermentum orci viverra nisl. In nec magna id ipsum aliquam dictum. Donec euismod enim et risus. </p>
+                    <p align='justify'>Nunc dictum, massa non dignissim commodo, metus quam vehicula lorem, et dignissim enim augue vitae pede. Donec at arcu. Nunc aliquam, dolor vitae sollicitudin lacinia, nibh orci sagittis diam, dignissim sodales dui erat nec eros. Fusce quis enim. Aenean eleifend, neque hendrerit elementum sodales, odio erat sagittis quam, sed tempor orci magna vitae tellus.</p>
+                    <p align='justify'>Category: <a href='#'>Web Development</a> | Posted by <a href='#'>Ford</a> | <strong>Date:</strong> 14 March 2048 </p>
+                </div>
+            ");
+            $content2->render();
+
+            $content3 = new Content("
+                <h3><a href='#'>Mauris congue felis at nisi</a></h3>
+                <p align='justify'><a href='#'><img src='images/templatemo_image_04.jpg' alt='image' class='image_frame image_fl' /></a> Duis faucibus, massa vitae dictum facilisis, ipsum nibh facilisis nisi, ut scelerisque metus enim in tortor. Mauris in sapien in massa pellentesque viverra. Quisque venenatis fringilla eros. Etiam in lorem ac nulla imperdiet sodales. Phasellus in justo at lectus pulvinar ultrices. Mauris ultrices sollicitudin turpis. Fusce non lacus et lorem ornare interdum. Nunc eget urna. Mauris vestibulum felis eget tortor. </p>
+                <p align='justify'>Praesent mattis varius quam. Vestibulum ullamcorper ipsum nec augue. Vestibulum auctor odio eget ante. Nunc commodo, magna pharetra semper vehicula, dui ligula feugiat elit, et euismod nunc orci ut libero. Etiam sodales massa vel metus. Mauris et elit quis mauris aliquet luctus. </p>
+                <p align='justify'>Category: <a href='#'>Print Media</a> | Posted by <a href='#'>Neo</a> | <strong>Date:</strong> 12 March 2048 </p>
+                <div class='cleaner h30'></div>
+            ");
+            $content3->render();
+            ?>
         </div>
         
         <div class="cleaner"></div>
     </div> <!-- end of main -->
     <div id="templatemo_main_bottom"></div>
     
-    <?php include("partials/footer.php")?>
-
+    <?php $template->includeFile("partials/footer.php"); ?>
 </div> <!-- end of wrapper -->
-<!-- templatemo 287 ancient -->
-<!-- 
-Ancient Template 
-http://www.templatemo.com/preview/templatemo_287_ancient 
--->
-</body>
+
+<?php
+$template->renderFooter();
+?>

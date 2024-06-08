@@ -1,12 +1,34 @@
-<?php 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $db_name = "ancient";  
-    $conn = new mysqli($servername, $username, $password, $db_name);
-    if($conn->connect_error){
-        die("Connection failed".$conn->connect_error);
+<?php
+
+class Database {
+    private $servername;
+    private $username;
+    private $password;
+    private $dbName;
+    private $conn;
+
+    public function __construct($servername, $username, $password, $dbName) {
+        $this->servername = $servername;
+        $this->username = $username;
+        $this->password = $password;
+        $this->dbName = $dbName;
     }
-    echo "";
-    
-    ?>
+
+    public function connect() {
+        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbName);
+        if ($this->conn->connect_error) {
+            die("Connection failed: " . $this->conn->connect_error);
+        }
+        echo "";
+    }
+
+    public function getConnection() {
+        return $this->conn;
+    }
+}
+
+// Iniciácia databázového pripojenia
+$database = new Database("localhost", "root", "", "ancient");
+$database->connect();
+$conn = $database->getConnection();
+?>
